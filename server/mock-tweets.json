@@ -1,0 +1,134 @@
+[
+  {
+    "id": "1",
+    "author": "technews",
+    "authorName": "Tech News",
+    "text": "BREAKING: OpenChip announces the Photon-1, the first consumer laptop chip built on a 1.4nm process. Claims 2x battery life over anything shipping today.",
+    "likes": 15400,
+    "retweets": 4200,
+    "url": "https://x.com/technews/status/1",
+    "ts": "Wed Jul 01 14:02:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "2",
+    "author": "chipanalyst",
+    "authorName": "Chip Analyst",
+    "text": "Photon-1 benchmarks leaked: 30% faster single core than last year's flagship, but yields are reportedly terrible. Don't expect volume until Q2 next year.",
+    "likes": 3200,
+    "retweets": 800,
+    "url": "https://x.com/chipanalyst/status/2",
+    "ts": "Wed Jul 01 15:11:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "3",
+    "author": "laptopreviewer",
+    "authorName": "Laptop Reviewer",
+    "text": "Hands-on with a Photon-1 dev unit. It's real, it's fast, and it ran a full compile of Chromium without spinning up the fans once. Wild.",
+    "likes": 8900,
+    "retweets": 1900,
+    "url": "https://x.com/laptopreviewer/status/3",
+    "ts": "Wed Jul 01 18:40:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "4",
+    "author": "hoopswire",
+    "authorName": "Hoops Wire",
+    "text": "FINAL: Meteors 112, Comets 108 in double OT. Jalen Cruz drops a career-high 51 points. Series tied 3-3, game 7 Thursday night.",
+    "likes": 22000,
+    "retweets": 6100,
+    "url": "https://x.com/hoopswire/status/4",
+    "ts": "Thu Jul 02 03:15:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "5",
+    "author": "courtsidereport",
+    "authorName": "Courtside Report",
+    "text": "Cruz after the game: 'We weren't losing this one at home.' Meteors coach confirms Okafor is questionable for game 7 with an ankle sprain.",
+    "likes": 5400,
+    "retweets": 900,
+    "url": "https://x.com/courtsidereport/status/5",
+    "ts": "Thu Jul 02 04:01:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "6",
+    "author": "marketminute",
+    "authorName": "Market Minute",
+    "text": "Fed minutes out: two more members now leaning toward a September rate cut. Futures immediately priced in 70% odds, up from 45% yesterday.",
+    "likes": 4100,
+    "retweets": 1300,
+    "url": "https://x.com/marketminute/status/6",
+    "ts": "Wed Jul 01 19:00:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "7",
+    "author": "bondtrader",
+    "authorName": "Bond Trader",
+    "text": "10-year yield down 12bps on the Fed minutes. Biggest one-day move since March. Everyone repositioning for the cut.",
+    "likes": 1800,
+    "retweets": 400,
+    "url": "https://x.com/bondtrader/status/7",
+    "ts": "Wed Jul 01 19:45:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "8",
+    "author": "spacedaily",
+    "authorName": "Space Daily",
+    "text": "The Artemis IV crew just completed their final dress rehearsal. Launch window opens July 14. This is the mission that assembles the first lunar surface habitat module.",
+    "likes": 12800,
+    "retweets": 3500,
+    "url": "https://x.com/spacedaily/status/8",
+    "ts": "Wed Jul 01 16:20:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "9",
+    "author": "rocketwatch",
+    "authorName": "Rocket Watch",
+    "text": "Weather odds for the July 14 Artemis IV window just moved to 80% favorable. Backup windows July 16 and 19.",
+    "likes": 2100,
+    "retweets": 300,
+    "url": "https://x.com/rocketwatch/status/9",
+    "ts": "Thu Jul 02 01:10:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "10",
+    "author": "devgossip",
+    "authorName": "Dev Gossip",
+    "text": "The maintainer of leftfill (npm package with 40M weekly downloads) just deprecated it with the message 'use String.prototype.padStart, it's been ten years.' Half of CI worldwide is now printing warnings.",
+    "likes": 9600,
+    "retweets": 2700,
+    "url": "https://x.com/devgossip/status/10",
+    "ts": "Wed Jul 01 21:30:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "11",
+    "author": "jsframework",
+    "authorName": "JS Framework Watch",
+    "text": "Follow-up: leftfill deprecation broke exactly zero builds but generated an estimated 4 billion warning lines in 24 hours. The maintainer says he regrets nothing.",
+    "likes": 7200,
+    "retweets": 1500,
+    "url": "https://x.com/jsframework/status/11",
+    "ts": "Thu Jul 02 02:00:00 +0000 2026",
+    "isRetweet": false
+  },
+  {
+    "id": "12",
+    "author": "weatherdesk",
+    "authorName": "Weather Desk",
+    "text": "Heat advisory extended through Friday for the entire northeast corridor. Highs near 38C. Utilities asking people to shift laundry and dishwashing to after 9pm.",
+    "likes": 3300,
+    "retweets": 1100,
+    "url": "https://x.com/weatherdesk/status/12",
+    "ts": "Thu Jul 02 05:00:00 +0000 2026",
+    "isRetweet": false
+  }
+]
