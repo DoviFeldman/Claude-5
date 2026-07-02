@@ -41,21 +41,23 @@ export async function complete(system, prompt, { maxTokens = 4000 } = {}) {
   }
 
   // openai and deepseek share the OpenAI chat-completions shape
-  const base = provider === 'deepseek' ? 'https://api.deepseek.com/v1' : 'https://api.openai.com/v1';
+  const base = provider === 'deepseek' ? config.deepseekBaseUrl : 'https://api.openai.com/v1';
   const key = provider === 'deepseek' ? config.deepseekApiKey : config.openaiApiKey;
   if (!key) throw new Error(`${provider.toUpperCase()}_API_KEY is not set in server/.env`);
-  const json = await post(
-    `${base}/chat/completions`,
-    { authorization: `Bearer ${key}` },
-    {
-      model,
-      max_tokens: maxTokens,
-      messages: [
-        { role: 'system', content: system },
-        { role: 'user', content: prompt },
-      ],
-    }
-  );
+  const body = {
+    model,
+    max_tokens: maxTokens,
+    messages: [
+      { role: 'system', content: system },
+      { role: 'user', content: prompt },
+    ],
+  };
+  // NVIDIA-hosted DeepSeek reasoning models: keep thinking off so responses
+  // are fast and don't ramble.
+  if (provider === 'deepseek' && base.includes('nvidia.com')) {
+    body.chat_template_kwargs = { thinking: false };
+  }
+  const json = await post(`${base}/chat/completions`, { authorization: `Bearer ${key}` }, body);
   return json.choices[0].message.content;
 }
 

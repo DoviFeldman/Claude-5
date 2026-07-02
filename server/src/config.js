@@ -27,8 +27,13 @@ export const config = {
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
   openaiApiKey: process.env.OPENAI_API_KEY || '',
   deepseekApiKey: process.env.DEEPSEEK_API_KEY || '',
+  // Any OpenAI-compatible host serving DeepSeek models (e.g. NVIDIA's
+  // https://integrate.api.nvidia.com/v1). Default is DeepSeek's own API.
+  deepseekBaseUrl: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com/v1',
 
-  // TTS (OpenAI)
+  // TTS: "edge" (free Microsoft Edge voices, default) or "openai"
+  ttsProvider: process.env.TTS_PROVIDER || 'edge',
+  edgeVoice: process.env.EDGE_TTS_VOICE || 'en-US-ChristopherNeural',
   ttsModel: process.env.TTS_MODEL || 'gpt-4o-mini-tts',
   ttsVoice: process.env.TTS_VOICE || 'alloy',
 

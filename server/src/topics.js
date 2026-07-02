@@ -64,7 +64,11 @@ For each topic set "autoExpand": true only if this listener would clearly want t
 
 Return JSON: [{"title": "short spoken title", "autoExpand": true, "tweetIndexes": [3, 17, 42]}, ...]`;
 
-  const topics = parseJson(await complete(system, prompt, { maxTokens: 3000 }));
+  const raw = parseJson(await complete(system, prompt, { maxTokens: 3000 }));
+  // Some models wrap the array in an object like {"topics": [...]}.
+  const topics = Array.isArray(raw)
+    ? raw
+    : Object.values(raw ?? {}).find(Array.isArray) || [];
   return topics
     .filter((t) => Array.isArray(t.tweetIndexes) && t.tweetIndexes.length)
     .slice(0, config.maxTopics)
@@ -79,6 +83,8 @@ export async function writeTopicTexts(topic, profile) {
   const system =
     'You write scripts for a personal audio news briefing. Plain spoken prose only: no markdown, ' +
     'no bullet points, no emojis, no URLs, no hashtags read aloud. Natural, conversational, information-dense. ' +
+    'Do NOT ramble or pad: no filler phrases, no repeating yourself, no long-winded intros or outros — ' +
+    'but do not be so terse that details get lost. Every sentence must carry new information. ' +
     'Respond with JSON only.';
   const prompt = `Listener profile:
 ${profileText(profile)}
@@ -88,7 +94,7 @@ Source tweets:
 ${tweetsBlock(topic.tweets)}
 
 Write two scripts about this topic based ONLY on these tweets:
-1. "summary": 2-4 sentences with the essence of what happened.
+1. "summary": 2-4 tight sentences with the essence of what happened. No preamble, get straight to it.
 2. "deepDive": everything worth knowing from these tweets — the full story, key details, notable reactions and who said what — so the listener never has to open Twitter. A few flowing paragraphs, up to about 1500 characters. Not academic, just complete.
 
 Return JSON: {"summary": "...", "deepDive": "..."}`;
