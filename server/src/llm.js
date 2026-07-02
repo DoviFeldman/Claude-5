@@ -16,6 +16,8 @@ async function post(url, apiKeyHeader, body) {
         method: 'POST',
         headers: { 'content-type': 'application/json', ...apiKeyHeader },
         body: JSON.stringify(body),
+        // A hung connection would otherwise stall a build forever.
+        signal: AbortSignal.timeout(240_000),
       });
       if (!res.ok) {
         const retryable = res.status === 429 || res.status >= 500;
