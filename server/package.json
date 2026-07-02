@@ -1,0 +1,19 @@
+{
+  "name": "twitter-radio-server",
+  "version": "1.0.0",
+  "description": "Turns your Twitter home feed into a personal audio news briefing (summaries + deep dives) served to the phone app.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "build": "node src/build.js",
+    "test": "node test.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
