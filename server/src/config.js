@@ -24,9 +24,13 @@ export const config = {
   // LLM (summaries / clustering)
   llmProvider: process.env.LLM_PROVIDER || 'anthropic', // anthropic | openai | deepseek
   llmModel: process.env.LLM_MODEL || '',                // empty = provider default
-  // If the primary model still fails after retries, try this one before
-  // giving up (e.g. deepseek-v4-flash when the pro endpoint is flaky).
-  llmFallbackModel: process.env.LLM_FALLBACK_MODEL || '',
+  // Comma-separated models tried in order if the primary still fails after
+  // retries. Each entry is "model" (same provider) or "provider:model",
+  // e.g. "deepseek-ai/deepseek-v4-flash,openai:gpt-4o-mini".
+  llmFallbackModels: (process.env.LLM_FALLBACK_MODEL || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
   anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
   openaiApiKey: process.env.OPENAI_API_KEY || '',
   deepseekApiKey: process.env.DEEPSEEK_API_KEY || '',

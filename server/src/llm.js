@@ -36,17 +36,30 @@ async function post(url, apiKeyHeader, body) {
 
 export async function complete(system, prompt, opts = {}) {
   const primary = config.llmModel || DEFAULT_MODELS[config.llmProvider];
-  try {
-    return await completeWith(primary, system, prompt, opts);
-  } catch (err) {
-    if (!config.llmFallbackModel || config.llmFallbackModel === primary) throw err;
-    console.error(`[llm] ${primary} failed (${err.message.slice(0, 120)}); trying ${config.llmFallbackModel}`);
-    return completeWith(config.llmFallbackModel, system, prompt, opts);
+  // Each attempt is "provider:model"; fallbacks default to the same provider.
+  const attempts = [
+    `${config.llmProvider}:${primary}`,
+    ...config.llmFallbackModels.map((m) =>
+      m.includes(':') ? m : `${config.llmProvider}:${m}`
+    ),
+  ];
+  let lastErr;
+  for (const attempt of attempts) {
+    const [provider, model] = [
+      attempt.slice(0, attempt.indexOf(':')),
+      attempt.slice(attempt.indexOf(':') + 1),
+    ];
+    try {
+      return await completeWith(provider, model, system, prompt, opts);
+    } catch (err) {
+      lastErr = err;
+      console.error(`[llm] ${attempt} failed (${err.message.slice(0, 120)})`);
+    }
   }
+  throw lastErr;
 }
 
-async function completeWith(model, system, prompt, { maxTokens = 4000 } = {}) {
-  const provider = config.llmProvider;
+async function completeWith(provider, model, system, prompt, { maxTokens = 4000 } = {}) {
   if (!model) throw new Error(`Unknown LLM_PROVIDER "${provider}" (use anthropic|openai|deepseek)`);
 
   if (provider === 'anthropic') {
