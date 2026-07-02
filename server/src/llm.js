@@ -34,9 +34,19 @@ async function post(url, apiKeyHeader, body) {
   }
 }
 
-export async function complete(system, prompt, { maxTokens = 4000 } = {}) {
+export async function complete(system, prompt, opts = {}) {
+  const primary = config.llmModel || DEFAULT_MODELS[config.llmProvider];
+  try {
+    return await completeWith(primary, system, prompt, opts);
+  } catch (err) {
+    if (!config.llmFallbackModel || config.llmFallbackModel === primary) throw err;
+    console.error(`[llm] ${primary} failed (${err.message.slice(0, 120)}); trying ${config.llmFallbackModel}`);
+    return completeWith(config.llmFallbackModel, system, prompt, opts);
+  }
+}
+
+async function completeWith(model, system, prompt, { maxTokens = 4000 } = {}) {
   const provider = config.llmProvider;
-  const model = config.llmModel || DEFAULT_MODELS[provider];
   if (!model) throw new Error(`Unknown LLM_PROVIDER "${provider}" (use anthropic|openai|deepseek)`);
 
   if (provider === 'anthropic') {
