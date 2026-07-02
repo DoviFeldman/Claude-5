@@ -44,6 +44,14 @@ async function synthesizeEdge(text, outPath) {
 }
 
 export async function synthesize(text, outPath) {
-  if (config.ttsProvider === 'openai') return synthesizeOpenAI(text, outPath);
-  return synthesizeEdge(text, outPath);
+  const impl = config.ttsProvider === 'openai' ? synthesizeOpenAI : synthesizeEdge;
+  // Retry transient failures (network blips, Edge websocket drops).
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await impl(text, outPath);
+    } catch (e) {
+      if (attempt >= 3) throw e;
+      await new Promise((r) => setTimeout(r, attempt * 5000));
+    }
+  }
 }

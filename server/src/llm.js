@@ -9,15 +9,29 @@ const DEFAULT_MODELS = {
 };
 
 async function post(url, apiKeyHeader, body) {
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', ...apiKeyHeader },
-    body: JSON.stringify(body),
-  });
-  if (!res.ok) {
-    throw new Error(`LLM request failed (HTTP ${res.status}): ${(await res.text()).slice(0, 500)}`);
+  // Transient network blips and 5xx/429s shouldn't kill a whole build — retry.
+  for (let attempt = 1; ; attempt++) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', ...apiKeyHeader },
+        body: JSON.stringify(body),
+      });
+      if (!res.ok) {
+        const retryable = res.status === 429 || res.status >= 500;
+        const err = new Error(
+          `LLM request failed (HTTP ${res.status}): ${(await res.text()).slice(0, 500)}`
+        );
+        if (!retryable) throw { fatal: true, err };
+        throw err;
+      }
+      return res.json();
+    } catch (e) {
+      if (e.fatal) throw e.err;
+      if (attempt >= 3) throw e instanceof Error ? e : e.err;
+      await new Promise((r) => setTimeout(r, attempt * 5000));
+    }
   }
-  return res.json();
 }
 
 export async function complete(system, prompt, { maxTokens = 4000 } = {}) {

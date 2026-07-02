@@ -25,13 +25,20 @@ export async function buildBriefing(tweets, { idPrefix = '' } = {}) {
   for (let i = 0; i < clusters.length; i++) {
     const cluster = clusters[i];
     console.log(`[build] writing scripts ${i + 1}/${clusters.length}: ${cluster.title}`);
-    const { summary, deepDive } = await writeTopicTexts(cluster, profile);
-    if (!summary) continue;
+    let summary, deepDive;
     const summaryFile = `t${i}-summary.mp3`;
     const deepDiveFile = `t${i}-deepdive.mp3`;
-    console.log(`[build] TTS ${i + 1}/${clusters.length}`);
-    await synthesize(summary, path.join(dir, summaryFile));
-    await synthesize(deepDive || summary, path.join(dir, deepDiveFile));
+    try {
+      ({ summary, deepDive } = await writeTopicTexts(cluster, profile));
+      if (!summary) continue;
+      console.log(`[build] TTS ${i + 1}/${clusters.length}`);
+      await synthesize(summary, path.join(dir, summaryFile));
+      await synthesize(deepDive || summary, path.join(dir, deepDiveFile));
+    } catch (err) {
+      // One bad topic shouldn't sink the whole briefing.
+      console.error(`[build] skipping topic "${cluster.title}": ${err.message}`);
+      continue;
+    }
     topics.push({
       title: cluster.title,
       autoExpand: cluster.autoExpand,
