@@ -10,6 +10,7 @@
     ],
     "android": {
       "package": "com.twitterradio.app",
+      "usesCleartextTraffic": true,
       "permissions": [
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
@@ -26,6 +27,15 @@
         {
           "isBackgroundEnabled": false,
           "neverForLocation": true
+        }
+      ],
+      "expo-asset",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
       ]
     ],

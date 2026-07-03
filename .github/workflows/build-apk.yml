@@ -1,0 +1,61 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, apk-ci]
+    paths:
+      - 'app/**'
+      - '.github/workflows/build-apk.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Generate native Android project
+        working-directory: app
+        run: npx expo prebuild --platform android --no-install
+
+      - name: Verify cleartext flag made it into the manifest
+        run: grep -q 'usesCleartextTraffic="true"' app/android/app/src/main/AndroidManifest.xml
+
+      - name: Build release APK
+        working-directory: app/android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: twitter-radio-apk
+          path: app/android/app/build/outputs/apk/release/app-release.apk
+
+      # Stable direct-download URL for installing from a phone browser:
+      # https://github.com/DoviFeldman/Claude-5/releases/download/latest-apk/app-release.apk
+      - name: Publish APK to "latest-apk" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest-apk --yes --cleanup-tag || true
+          gh release create latest-apk \
+            app/android/app/build/outputs/apk/release/app-release.apk \
+            --title "Latest APK ($(date -u +%Y-%m-%d))" \
+            --notes "Auto-built from ${GITHUB_SHA}"

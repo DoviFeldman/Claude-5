@@ -6,3 +6,4 @@ app/android/
 app/ios/
 app/.expo/
 *.log
+app/dist/
