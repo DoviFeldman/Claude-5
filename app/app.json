@@ -1,18 +1,22 @@
 {
   "expo": {
     "name": "Twitter Radio",
-    "slug": "twitter-radio",
+    "slug": "buildapk",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
-    "platforms": ["android"],
+    "platforms": [
+      "android"
+    ],
     "android": {
       "package": "com.twitterradio.app",
       "permissions": [
         "android.permission.BLUETOOTH_SCAN",
         "android.permission.BLUETOOTH_CONNECT",
         "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.WAKE_LOCK"
+        "android.permission.WAKE_LOCK",
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN"
       ]
     },
     "plugins": [
@@ -24,6 +28,12 @@
           "neverForLocation": true
         }
       ]
-    ]
+    ],
+    "owner": "fabosdois-team",
+    "extra": {
+      "eas": {
+        "projectId": "bf4f37d7-e681-4b3d-a28a-c694b66a9475"
+      }
+    }
   }
 }
